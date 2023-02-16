@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { FormModal } from "./FormModal";
-import { TransactionContext } from "../contexts/TransactionContext";
+import { TemporaryDrawer } from "./TemporaryDrawer";
 
 export const Header = () => {
   const [open, setOpen] = React.useState(false);
@@ -21,11 +21,9 @@ export const Header = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ height: "200px", bgcolor: "#3730A3" }}>
-        <Container>
+        <Container disableGutters>
           <Toolbar sx={{ marginBlock: 2 }}>
-            <IconButton size="large" aria-label="menu">
-              <MenuIcon />
-            </IconButton>
+            <TemporaryDrawer />
             <Typography variant="h6" component={"div"} sx={{ flexGrow: 1 }}>
               Logo
             </Typography>

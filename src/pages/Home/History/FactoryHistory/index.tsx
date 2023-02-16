@@ -10,13 +10,10 @@ export const FactoryHistory = ({ rows, formatedValue }: FactoryProps) => {
   return (
     <>
       {rows.map((row) => (
-        <TableRow
-          key={row.title}
-          sx={{ border: 0, "& td": { border: 0, color: "inherit" } }}
-        >
-          <TableCell>{row.title}</TableCell>
+        <TableRow key={row.title} sx={{ border: 0, "& td": { border: 0 } }}>
+          <TableCell sx={{ color: "#6B7280" }}>{row.title}</TableCell>
           {row.type === "income" ? (
-            <TableCell sx={{ color: "#388e3c" }}>
+            <TableCell sx={{ color: "#22C55E" }}>
               R$ {formatedValue(row.value)}
             </TableCell>
           ) : (
@@ -24,8 +21,8 @@ export const FactoryHistory = ({ rows, formatedValue }: FactoryProps) => {
               R$ {formatedValue(row.value)}
             </TableCell>
           )}
-          <TableCell>{row.category}</TableCell>
-          <TableCell>{"11/11/1245"}</TableCell>
+          <TableCell sx={{ color: "#6B7280" }}>{row.category}</TableCell>
+          <TableCell sx={{ color: "#6B7280" }}>{"11/11/1245"}</TableCell>
         </TableRow>
       ))}
     </>

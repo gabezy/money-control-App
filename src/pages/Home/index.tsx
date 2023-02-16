@@ -4,6 +4,8 @@ import { TransactionContext } from "../../contexts/TransactionContext";
 import { Transaction } from "../../reducers/Transaction/reducer";
 import { Board } from "./Board";
 import { History } from "./History";
+import { TemporaryDrawer } from "../../components/TemporaryDrawer";
+import { Header } from "../../components/Header";
 
 interface valuesPros {
   income: number;
@@ -35,20 +37,22 @@ export const Home = () => {
   }, [transactions]);
 
   return (
-    <Box component={"section"}>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          gap: 4,
-          marginTop: -6,
-        }}
-      >
-        <Board boardLabel="Entradas" value={values.income} />
-        <Board boardLabel="Saídas" value={values.outcome} />
-        <Board boardLabel="Total" value={values.total} />
+    <>
+      <Box component={"section"}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: 4,
+            marginTop: -6,
+          }}
+        >
+          <Board boardLabel="Entradas" value={values.income} />
+          <Board boardLabel="Saídas" value={values.outcome} />
+          <Board boardLabel="Total" value={values.total} />
+        </Box>
+        <History />
       </Box>
-      <History />
-    </Box>
+    </>
   );
 };
