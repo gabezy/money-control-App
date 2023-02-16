@@ -1,9 +1,39 @@
-import { Box } from "@mui/material";
 import React from "react";
-import { Board } from "./components/Board";
-import { History } from "./components/History";
+import { Box } from "@mui/material";
+import { TransactionContext } from "../../contexts/TransactionContext";
+import { Transaction } from "../../reducers/Transaction/reducer";
+import { Board } from "./Board";
+import { History } from "./History";
+
+interface valuesPros {
+  income: number;
+  outcome: number;
+  total: number;
+}
 
 export const Home = () => {
+  const { transactions } = React.useContext(TransactionContext);
+  const [values, setValues] = React.useState({} as valuesPros);
+
+  const calcTypeTransaction = (type: string, transactions: Transaction[]) => {
+    return transactions
+      .filter((transaction) => transaction.type === type)
+      .reduce((acc, current) => {
+        return acc + current.value;
+      }, 0);
+  };
+
+  React.useEffect(() => {
+    const income = calcTypeTransaction("income", transactions);
+    const outcome = calcTypeTransaction("outcome", transactions);
+    const total = income - outcome;
+    setValues({
+      income,
+      outcome,
+      total,
+    });
+  }, [transactions]);
+
   return (
     <Box component={"section"}>
       <Box
@@ -14,9 +44,9 @@ export const Home = () => {
           marginTop: -6,
         }}
       >
-        <Board boardLabel="Entradas" value={6000} />
-        <Board boardLabel="Saídas" value={3000} />
-        <Board boardLabel="Total" value={6000} />
+        <Board boardLabel="Entradas" value={values.income} />
+        <Board boardLabel="Saídas" value={values.outcome} />
+        <Board boardLabel="Total" value={values.total} />
       </Box>
       <History />
     </Box>

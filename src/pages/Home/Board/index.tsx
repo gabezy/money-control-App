@@ -1,8 +1,10 @@
+import React from "react";
 import { Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import { TransactionContext } from "../../../contexts/TransactionContext";
 
 interface BoardProps {
   boardLabel: "Entradas" | "Saídas" | "Total";
@@ -10,7 +12,9 @@ interface BoardProps {
 }
 
 export const Board = ({ boardLabel, value }: BoardProps) => {
-  const formattedValue = value.toFixed(2).replace(".", ",");
+  const { formatValue } = React.useContext(TransactionContext);
+
+  const formattedValue = value ? formatValue(value) : formatValue(0);
 
   return (
     <Paper

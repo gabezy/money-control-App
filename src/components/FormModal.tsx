@@ -1,9 +1,9 @@
+import React from "react";
 import {
   Box,
   Button,
   FormControl,
   FormControlLabel,
-  FormLabel,
   InputAdornment,
   Modal,
   Radio,
@@ -11,6 +11,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { Controller, useForm } from "react-hook-form";
+import { TransactionContext } from "../contexts/TransactionContext";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface FormModalProps {
   open: boolean;
@@ -29,9 +33,33 @@ const style = {
   borderRadius: 2,
 };
 
+const valueRegex = /[0-9]+/;
+
+const schema = z.object({
+  title: z.string().min(1),
+  category: z.string().min(1),
+  value: z.string().regex(valueRegex),
+  type: z.string().refine((val) => ["income", "outcome"].includes(val)),
+});
+
+export type schemaForm = z.infer<typeof schema>;
+
 export const FormModal = ({ open, handleClose }: FormModalProps) => {
-  const handleSubmit = (event: Event) => {
-    event.preventDefault();
+  const { transactions, createNewTransaction } =
+    React.useContext(TransactionContext);
+  const { register, handleSubmit, reset } = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      title: "",
+      category: "",
+      value: "0",
+      type: "",
+    },
+  });
+
+  const handleCreateNewTransation = (data: schemaForm) => {
+    createNewTransaction(data);
+    reset();
     handleClose();
   };
 
@@ -42,20 +70,32 @@ export const FormModal = ({ open, handleClose }: FormModalProps) => {
           <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: 2 }}>
             Cadastrar transação
           </Typography>
-          <Box
-            component="form"
-            sx={{ display: "flex", flexDirection: "column", gap: 3 }}
+          <form
+            style={{ display: "flex", flexDirection: "column", gap: "24px" }}
+            onSubmit={handleSubmit(handleCreateNewTransation)}
           >
-            <TextField id="title" label="Título" variant="outlined" />
-            <TextField id="category" label="Categoria" variant="outlined" />
+            <TextField
+              id="title"
+              label="Título"
+              variant="outlined"
+              {...register("title")}
+            />
+            <TextField
+              id="category"
+              label="Categoria"
+              variant="outlined"
+              {...register("category")}
+            />
             <TextField
               id="value"
               label="Valor"
+              inputMode="numeric"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">$</InputAdornment>
                 ),
               }}
+              {...register("value")}
             />
             <FormControl>
               <RadioGroup
@@ -68,11 +108,13 @@ export const FormModal = ({ open, handleClose }: FormModalProps) => {
                   value="income"
                   control={<Radio />}
                   label="Entrada"
+                  {...register("type")}
                 />
                 <FormControlLabel
                   value="outcome"
                   control={<Radio />}
                   label="Despesa"
+                  {...register("type")}
                 />
               </RadioGroup>
             </FormControl>
@@ -81,13 +123,11 @@ export const FormModal = ({ open, handleClose }: FormModalProps) => {
               sx={{
                 bgcolor: "green",
                 color: "white",
-                // textTransform: "capitalize",
               }}
-              onClick={handleClose}
             >
               Cadastrar
             </Button>
-          </Box>
+          </form>
         </Box>
       </Modal>
     </div>
