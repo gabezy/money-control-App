@@ -10,12 +10,13 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { FormModal } from "./FormModal";
+import { TransactionContext } from "../contexts/TransactionContext";
 
 export const Header = () => {
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => setOpen(true);
-  const handdleClose = () => setOpen(false);
+  const handleClose = () => setOpen(false);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -38,7 +39,7 @@ export const Header = () => {
           </Toolbar>
         </Container>
       </AppBar>
-      <FormModal open={open} handleClose={handdleClose} />
+      <FormModal open={open} handleClose={handleClose} />
     </Box>
   );
 };

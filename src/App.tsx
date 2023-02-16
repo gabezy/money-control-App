@@ -1,11 +1,14 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
+import { TransactionProvider } from "./contexts/TransactionContext";
 import { Router } from "./Router";
 
 function App() {
   return (
     <BrowserRouter>
-      <Router />
+      <TransactionProvider>
+        <Router />
+      </TransactionProvider>
     </BrowserRouter>
   );
 }
