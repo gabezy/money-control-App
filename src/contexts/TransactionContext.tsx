@@ -1,6 +1,10 @@
 import React, { ReactNode } from "react";
 import { schemaForm } from "../components/FormModal";
 import {
+  addNewTransactionAction,
+  deleteTransactionAction,
+} from "../reducers/Transaction/actions";
+import {
   Transaction,
   transactionReducer,
 } from "../reducers/Transaction/reducer";
@@ -45,21 +49,11 @@ export const TransactionProvider = ({ children }: ProviderProps) => {
       type: transaction.type,
       date: date,
     };
-    dispatch({
-      type: "CREATE_NEW_TRANSACTION",
-      payload: {
-        newTransaction,
-      },
-    });
+    dispatch(addNewTransactionAction(newTransaction));
   };
 
   const deleteTransaction = (id: number) => {
-    dispatch({
-      type: "DELETE_TRANSACTION",
-      payload: {
-        id,
-      },
-    });
+    dispatch(deleteTransactionAction(id));
   };
 
   const formatValue = (value: number) => {
