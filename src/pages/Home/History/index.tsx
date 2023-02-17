@@ -31,7 +31,10 @@ export const History = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <FactoryHistory rows={transactions} formatedValue={formatValue} />
+            <FactoryHistory
+              transactions={transactions}
+              formatedValue={formatValue}
+            />
           </TableBody>
         </Table>
       </TableContainer>

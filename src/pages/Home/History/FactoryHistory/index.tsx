@@ -1,28 +1,50 @@
-import { TableCell, TableRow } from "@mui/material";
+import React from "react";
+import { IconButton, TableCell, TableRow } from "@mui/material";
 import { Transaction } from "../../../../reducers/Transaction/reducer";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { TransactionContext } from "../../../../contexts/TransactionContext";
 
 interface FactoryProps {
-  rows: Transaction[];
+  transactions: Transaction[];
   formatedValue: (value: number) => string;
 }
 
-export const FactoryHistory = ({ rows, formatedValue }: FactoryProps) => {
+export const FactoryHistory = ({
+  transactions,
+  formatedValue,
+}: FactoryProps) => {
+  const { deleteTransaction } = React.useContext(TransactionContext);
+
   return (
     <>
-      {rows.map((row) => (
-        <TableRow key={row.title} sx={{ border: 0, "& td": { border: 0 } }}>
-          <TableCell sx={{ color: "#6B7280" }}>{row.title}</TableCell>
-          {row.type === "income" ? (
+      {transactions.map((transaction) => (
+        <TableRow
+          key={transaction.title}
+          sx={{ border: 0, "& td": { border: 0 } }}
+        >
+          <TableCell sx={{ color: "#6B7280" }}>{transaction.title}</TableCell>
+          {transaction.type === "income" ? (
             <TableCell sx={{ color: "#22C55E" }}>
-              R$ {formatedValue(row.value)}
+              R$ {formatedValue(transaction.value)}
             </TableCell>
           ) : (
             <TableCell sx={{ color: "#d32f2f" }}>
-              R$ {formatedValue(row.value)}
+              R$ {formatedValue(transaction.value)}
             </TableCell>
           )}
-          <TableCell sx={{ color: "#6B7280" }}>{row.category}</TableCell>
+          <TableCell sx={{ color: "#6B7280" }}>
+            {transaction.category}
+          </TableCell>
           <TableCell sx={{ color: "#6B7280" }}>{"11/11/1245"}</TableCell>
+          <TableCell sx={{ color: "#6B7280" }}>
+            <IconButton onClick={() => deleteTransaction(transaction.id)}>
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+            <IconButton onClick={() => console.log("a")}>
+              <EditIcon fontSize="small" />
+            </IconButton>
+          </TableCell>
         </TableRow>
       ))}
     </>
