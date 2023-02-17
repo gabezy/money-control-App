@@ -8,6 +8,7 @@ import {
 interface ContextProps {
   transactions: Transaction[];
   createNewTransaction: (transaction: schemaForm) => void;
+  deleteTransaction: (id: number) => void;
   formatValue: (value: number) => string;
 }
 
@@ -18,7 +19,21 @@ interface ProviderProps {
 }
 
 export const TransactionProvider = ({ children }: ProviderProps) => {
-  const [transactions, dispatch] = React.useReducer(transactionReducer, []);
+  const localStorageStateVersion = "@money-control:transactions-state-1.0.0";
+
+  const [transactions, dispatch] = React.useReducer(
+    transactionReducer,
+    [],
+    () => {
+      const storageStateAsJSON = localStorage.getItem(localStorageStateVersion);
+      if (storageStateAsJSON) return JSON.parse(storageStateAsJSON);
+    }
+  );
+
+  React.useEffect(() => {
+    const stateJSON = JSON.stringify(transactions);
+    localStorage.setItem(localStorageStateVersion, stateJSON);
+  }, [transactions]);
 
   const createNewTransaction = (transaction: schemaForm) => {
     const date = new Date();
@@ -38,12 +53,26 @@ export const TransactionProvider = ({ children }: ProviderProps) => {
     });
   };
 
+  const deleteTransaction = (id: number) => {
+    dispatch({
+      type: "DELETE_TRANSACTION",
+      payload: {
+        id,
+      },
+    });
+  };
+
   const formatValue = (value: number) => {
     return value.toFixed(2).replace(".", ",");
   };
   return (
     <TransactionContext.Provider
-      value={{ transactions, createNewTransaction, formatValue }}
+      value={{
+        transactions,
+        createNewTransaction,
+        deleteTransaction,
+        formatValue,
+      }}
     >
       {children}
     </TransactionContext.Provider>
