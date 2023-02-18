@@ -11,15 +11,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Controller, useForm } from "react-hook-form";
-import { TransactionContext } from "../contexts/TransactionContext";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-interface FormModalProps {
-  open: boolean;
-  handleClose: () => void;
-}
+import { Transaction } from "../reducers/Transaction/reducer";
+import { TransactionContext } from "../contexts/TransactionContext";
 
 const style = {
   position: "absolute" as "absolute",
@@ -35,7 +31,7 @@ const style = {
 
 const valueRegex = /[0-9]+/;
 
-const schema = z.object({
+export const schema = z.object({
   title: z.string().min(1),
   category: z.string().min(1),
   value: z.string().regex(valueRegex),
@@ -44,22 +40,33 @@ const schema = z.object({
 
 export type schemaForm = z.infer<typeof schema>;
 
-export const FormModal = ({ open, handleClose }: FormModalProps) => {
-  const { transactions, createNewTransaction } =
-    React.useContext(TransactionContext);
+interface FormModalProps {
+  transaction: Transaction;
+  open: boolean;
+  handleClose: () => void;
+}
+
+export const FormModalEdit = ({
+  transaction,
+  open,
+  handleClose,
+}: FormModalProps) => {
+  const { editTransaction } = React.useContext(TransactionContext);
+
+  const defaultValues: schemaForm = {
+    title: transaction.title,
+    category: transaction.category,
+    type: transaction.type,
+    value: transaction.value.toFixed(2),
+  };
+
   const { register, handleSubmit, reset } = useForm({
     resolver: zodResolver(schema),
-    defaultValues: {
-      title: "",
-      category: "",
-      value: "0",
-      type: "",
-    },
+    defaultValues,
   });
 
-  const handleCreateNewTransation = (data: schemaForm) => {
-    createNewTransaction(data);
-    reset();
+  const handleEditCurrentTransaction = (data: schemaForm) => {
+    editTransaction(data, transaction.id);
     handleClose();
   };
 
@@ -68,11 +75,11 @@ export const FormModal = ({ open, handleClose }: FormModalProps) => {
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
           <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: 2 }}>
-            Cadastrar transação
+            Editar transação
           </Typography>
           <form
             style={{ display: "flex", flexDirection: "column", gap: "24px" }}
-            onSubmit={handleSubmit(handleCreateNewTransation)}
+            onSubmit={handleSubmit(handleEditCurrentTransaction)}
           >
             <TextField
               id="title"
@@ -92,7 +99,7 @@ export const FormModal = ({ open, handleClose }: FormModalProps) => {
               inputMode="numeric"
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">$</InputAdornment>
+                  <InputAdornment position="start">R$</InputAdornment>
                 ),
               }}
               {...register("value")}

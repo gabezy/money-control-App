@@ -8,8 +8,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import { FormModal } from "./FormModal";
+import { FormModalNewTransaction } from "./FormModalNewTransaction";
 import { TemporaryDrawer } from "./TemporaryDrawer";
 
 export const Header = () => {
@@ -37,7 +36,7 @@ export const Header = () => {
           </Toolbar>
         </Container>
       </AppBar>
-      <FormModal open={open} handleClose={handleClose} />
+      <FormModalNewTransaction open={open} handleClose={handleClose} />
     </Box>
   );
 };

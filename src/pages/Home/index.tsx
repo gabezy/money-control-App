@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import { TransactionContext } from "../../contexts/TransactionContext";
 import { Transaction } from "../../reducers/Transaction/reducer";
 import { Board } from "./Board";
-import { History } from "./History";
+import { LatestTransactions } from "./LatestTransactions";
 import { TemporaryDrawer } from "../../components/TemporaryDrawer";
 import { Header } from "../../components/Header";
 
@@ -51,7 +51,7 @@ export const Home = () => {
           <Board boardLabel="Saídas" value={values.outcome} />
           <Board boardLabel="Total" value={values.total} />
         </Box>
-        <History />
+        <LatestTransactions />
       </Box>
     </>
   );

@@ -8,12 +8,12 @@ import {
   TableRow,
 } from "@mui/material";
 import { TransactionContext } from "../../../contexts/TransactionContext";
-import { FactoryHistory } from "./FactoryHistory";
+import { Item } from "./Item";
 
-export const History = () => {
+export const LatestTransactions = () => {
   const { transactions, formatValue } = React.useContext(TransactionContext);
 
-  if (transactions.length)
+  if (transactions.length > 0)
     return (
       <TableContainer sx={{ marginBlock: 3 }}>
         <Table aria-label="last transactions" sx={{ color: "#6B7280" }}>
@@ -31,13 +31,12 @@ export const History = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <FactoryHistory
-              transactions={transactions}
-              formatedValue={formatValue}
-            />
+            {transactions.map((T) => (
+              <Item key={T.id} transaction={T} formatedValue={formatValue} />
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
     );
-  else return null;
+  else return <div></div>;
 };

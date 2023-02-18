@@ -1,8 +1,9 @@
 import React, { ReactNode } from "react";
-import { schemaForm } from "../components/FormModal";
+import { schemaForm } from "../components/FormModalEdit";
 import {
   addNewTransactionAction,
   deleteTransactionAction,
+  editTransactionAction,
 } from "../reducers/Transaction/actions";
 import {
   Transaction,
@@ -14,6 +15,7 @@ interface ContextProps {
   createNewTransaction: (transaction: schemaForm) => void;
   deleteTransaction: (id: number) => void;
   formatValue: (value: number) => string;
+  editTransaction: (editedTransaction: schemaForm, id: number) => void;
 }
 
 export const TransactionContext = React.createContext({} as ContextProps);
@@ -31,6 +33,7 @@ export const TransactionProvider = ({ children }: ProviderProps) => {
     () => {
       const storageStateAsJSON = localStorage.getItem(localStorageStateVersion);
       if (storageStateAsJSON) return JSON.parse(storageStateAsJSON);
+      return [];
     }
   );
 
@@ -45,15 +48,20 @@ export const TransactionProvider = ({ children }: ProviderProps) => {
       id: date.getTime(),
       title: transaction.title,
       category: transaction.category,
-      value: Number(transaction.value),
+      value: Number(transaction.value.replace(",", ".")),
       type: transaction.type,
       date: date,
     };
+
     dispatch(addNewTransactionAction(newTransaction));
   };
 
   const deleteTransaction = (id: number) => {
     dispatch(deleteTransactionAction(id));
+  };
+
+  const editTransaction = (editedTransaction: schemaForm, id: number) => {
+    dispatch(editTransactionAction(editedTransaction, id));
   };
 
   const formatValue = (value: number) => {
@@ -65,6 +73,7 @@ export const TransactionProvider = ({ children }: ProviderProps) => {
         transactions,
         createNewTransaction,
         deleteTransaction,
+        editTransaction,
         formatValue,
       }}
     >
