@@ -5,6 +5,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { TransactionContext } from "../../../../contexts/TransactionContext";
 import { FormModalEdit } from "../../../../components/FormModalEdit";
+import { format } from "date-fns";
 
 interface FactoryProps {
   transaction: Transaction;
@@ -15,6 +16,9 @@ export const Item = ({ transaction, formatedValue }: FactoryProps) => {
   const { deleteTransaction } = React.useContext(TransactionContext);
   const [isOpen, setIsOpen] = React.useState(false);
 
+  const formatDate = (date: Date) => {
+    return format(new Date(transaction.date), "dd/MM/yyyy");
+  };
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => setIsOpen(false);
 
@@ -35,7 +39,9 @@ export const Item = ({ transaction, formatedValue }: FactoryProps) => {
           </TableCell>
         )}
         <TableCell sx={{ color: "#6B7280" }}>{transaction.category}</TableCell>
-        <TableCell sx={{ color: "#6B7280" }}>{"11/11/1245"}</TableCell>
+        <TableCell sx={{ color: "#6B7280" }}>
+          {formatDate(transaction.date)}
+        </TableCell>
         <TableCell sx={{ color: "#6B7280" }}>
           <IconButton onClick={() => deleteTransaction(transaction.id)}>
             <DeleteIcon fontSize="small" />

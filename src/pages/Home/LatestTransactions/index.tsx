@@ -1,11 +1,13 @@
 import React from "react";
 import {
+  Box,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import { TransactionContext } from "../../../contexts/TransactionContext";
 import { Item } from "./Item";
@@ -38,5 +40,22 @@ export const LatestTransactions = () => {
         </Table>
       </TableContainer>
     );
-  else return <div></div>;
+  else
+    return (
+      <Box
+        sx={{
+          marginBlock: 10,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h5" sx={{ fontWeight: "bold", color: "#44403C" }}>
+          Você ainda não tem transação cadastradas
+        </Typography>
+        <Typography sx={{ color: "#57534E" }}>
+          Crie transações e organize sua vida financeira
+        </Typography>
+      </Box>
+    );
 };

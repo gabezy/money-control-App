@@ -16,39 +16,76 @@ export const Board = ({ boardLabel, value }: BoardProps) => {
 
   const formattedValue = value ? formatValue(value) : formatValue(0);
 
-  return (
-    <Paper
-      elevation={3}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        flex: 1,
-        bgcolor: "#F9FAFB",
-        border: "none",
-        outline: "none",
-        p: 3,
-        "&:last-child": { bgcolor: "#22C55E", color: "#F9FAFB" },
-      }}
-    >
-      <Box
+  if (value >= 0)
+    return (
+      <Paper
+        elevation={3}
         sx={{
           display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
+          flexDirection: "column",
+          flex: 1,
+          bgcolor: "#F9FAFB",
+          border: "none",
+          outline: "none",
+          p: 3,
+          "&:last-child": { bgcolor: "#22C55E", color: "#F9FAFB" },
         }}
       >
-        <Typography component={"span"}>{boardLabel}</Typography>
-        {boardLabel === "Entradas" && (
-          <ArrowCircleUpIcon color="success" fontSize="medium" />
-        )}
-        {boardLabel === "Saídas" && (
-          <ArrowCircleDownIcon color="error" fontSize="medium" />
-        )}
-        {boardLabel === "Total" && <AttachMoneyIcon fontSize="medium" />}
-      </Box>
-      <Typography variant="h4" sx={{ fontWeight: "bold", marginTop: 1 }}>
-        R$ {formattedValue}
-      </Typography>
-    </Paper>
-  );
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Typography component={"span"}>{boardLabel}</Typography>
+          {boardLabel === "Entradas" && (
+            <ArrowCircleUpIcon color="success" fontSize="medium" />
+          )}
+          {boardLabel === "Saídas" && (
+            <ArrowCircleDownIcon color="error" fontSize="medium" />
+          )}
+          {boardLabel === "Total" && <AttachMoneyIcon fontSize="medium" />}
+        </Box>
+        <Typography variant="h4" sx={{ fontWeight: "bold", marginTop: 1 }}>
+          R$ {formattedValue}
+        </Typography>
+      </Paper>
+    );
+  else
+    return (
+      <Paper
+        elevation={3}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          flex: 1,
+          bgcolor: "#F9FAFB",
+          border: "none",
+          outline: "none",
+          p: 3,
+          "&:last-child": { bgcolor: "#EF4444", color: "#F9FAFB" },
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Typography component={"span"}>{boardLabel}</Typography>
+          {boardLabel === "Entradas" && (
+            <ArrowCircleUpIcon color="success" fontSize="medium" />
+          )}
+          {boardLabel === "Saídas" && (
+            <ArrowCircleDownIcon color="error" fontSize="medium" />
+          )}
+          {boardLabel === "Total" && <AttachMoneyIcon fontSize="medium" />}
+        </Box>
+        <Typography variant="h4" sx={{ fontWeight: "bold", marginTop: 1 }}>
+          R$ {formattedValue}
+        </Typography>
+      </Paper>
+    );
 };
