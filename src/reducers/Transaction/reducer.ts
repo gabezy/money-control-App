@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { ActionType } from "./actions";
 
 export interface Transaction {
@@ -26,6 +27,7 @@ export const transactionReducer = (state: Transaction[], action: any) => {
           return s;
         } else return s;
       });
+
     default:
       return state;
   }

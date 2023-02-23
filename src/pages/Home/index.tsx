@@ -1,38 +1,26 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { TransactionContext } from "../../contexts/TransactionContext";
-import { Transaction } from "../../reducers/Transaction/reducer";
 import { Board } from "./Board";
 import { LatestTransactions } from "./LatestTransactions";
-import { TemporaryDrawer } from "../../components/TemporaryDrawer";
-import { Header } from "../../components/Header";
 
 interface valuesPros {
-  income: number;
-  outcome: number;
-  total: number;
+  totalIncome: number;
+  totalOutcome: number;
+  totalBalance: number;
 }
 
 export const Home = () => {
-  const { transactions } = React.useContext(TransactionContext);
+  const { transactions, totalIncomeAndOutcome } =
+    React.useContext(TransactionContext);
   const [values, setValues] = React.useState({} as valuesPros);
 
-  const calcTypeTransaction = (type: string, transactions: Transaction[]) => {
-    return transactions
-      .filter((transaction) => transaction.type === type)
-      .reduce((acc, current) => {
-        return acc + current.value;
-      }, 0);
-  };
-
   React.useEffect(() => {
-    const income = calcTypeTransaction("income", transactions);
-    const outcome = calcTypeTransaction("outcome", transactions);
-    const total = income - outcome;
+    const { totalIncome, totalOutcome, totalBalance } = totalIncomeAndOutcome();
     setValues({
-      income,
-      outcome,
-      total,
+      totalIncome,
+      totalOutcome,
+      totalBalance,
     });
   }, [transactions]);
 
@@ -47,9 +35,9 @@ export const Home = () => {
             marginTop: -6,
           }}
         >
-          <Board boardLabel="Entradas" value={values.income} />
-          <Board boardLabel="Saídas" value={values.outcome} />
-          <Board boardLabel="Total" value={values.total} />
+          <Board boardLabel="Entradas" value={values.totalIncome} />
+          <Board boardLabel="Saídas" value={values.totalOutcome} />
+          <Board boardLabel="Total" value={values.totalBalance} />
         </Box>
         <LatestTransactions />
       </Box>

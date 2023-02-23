@@ -14,8 +14,13 @@ interface ContextProps {
   transactions: Transaction[];
   createNewTransaction: (transaction: schemaForm) => void;
   deleteTransaction: (id: number) => void;
-  formatValue: (value: number) => string;
   editTransaction: (editedTransaction: schemaForm, id: number) => void;
+  totalIncomeAndOutcome: () => {
+    totalIncome: number;
+    totalOutcome: number;
+    totalBalance: number;
+  };
+  formatValue: (value: number) => string;
 }
 
 export const TransactionContext = React.createContext({} as ContextProps);
@@ -64,6 +69,27 @@ export const TransactionProvider = ({ children }: ProviderProps) => {
     dispatch(editTransactionAction(editedTransaction, id));
   };
 
+  const totalIncomeAndOutcome = () => {
+    const calculateTransactionsByTyoe = (
+      type: "income" | "outcome",
+      transactions: Transaction[]
+    ) => {
+      return transactions
+        .filter((transaction) => transaction.type === type)
+        .reduce((acc, current) => {
+          return acc + current.value;
+        }, 0);
+    };
+    const totalIncome = calculateTransactionsByTyoe("income", transactions);
+    const totalOutcome = calculateTransactionsByTyoe("outcome", transactions);
+    const totalBalance = totalIncome - totalOutcome;
+    return {
+      totalIncome,
+      totalOutcome,
+      totalBalance,
+    };
+  };
+
   const formatValue = (value: number) => {
     return value.toFixed(2).replace(".", ",");
   };
@@ -74,6 +100,7 @@ export const TransactionProvider = ({ children }: ProviderProps) => {
         createNewTransaction,
         deleteTransaction,
         editTransaction,
+        totalIncomeAndOutcome,
         formatValue,
       }}
     >
