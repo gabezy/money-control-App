@@ -13,7 +13,7 @@ export const TransactionHistory = () => {
         sx={{ fontSize: "2.5rem", mt: 2, mb: 4 }}
         align={"center"}
       >
-        Histórico
+        Histórico Completo
       </Typography>
       <LatestTransactions />
     </div>

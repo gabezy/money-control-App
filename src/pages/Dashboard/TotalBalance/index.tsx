@@ -19,9 +19,10 @@ const options = {
 };
 
 export const TotalBalance = () => {
-  const { totalIncomeAndOutcome } = React.useContext(TransactionContext);
+  const { totalIncomeAndOutcome, transactions } =
+    React.useContext(TransactionContext);
 
-  const { totalIncome, totalOutcome } = totalIncomeAndOutcome();
+  const { totalIncome, totalOutcome } = totalIncomeAndOutcome(transactions);
 
   const data = {
     labels: ["Entradas", "Saídas"],

@@ -8,8 +8,8 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { faker } from "@faker-js/faker";
 import { Bar } from "react-chartjs-2";
+import { TransactionContext } from "../../../contexts/TransactionContext";
 
 ChartJS.register(
   CategoryScale,
@@ -33,25 +33,72 @@ const options = {
   },
 };
 
-const labels = ["Jan", "Fev", "Mar", "Maio"];
+const labels = [
+  "Janeiro",
+  "Fevereiro",
+  "Março",
+  "Abril",
+  "Maio",
+  "junho",
+  "Julho",
+  "Agosto",
+  "Setembro",
+  "Outubro",
+  "Novembro",
+  "Dezembro",
+];
 
-// #EF4444;
-const data = {
-  labels,
-  datasets: [
-    {
-      label: "Entradas",
-      data: labels.map(() => faker.datatype.number({ min: 10, max: 10000 })),
-      backgroundColor: "#22C55E",
-    },
-    {
-      label: "Saída",
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 10000 })),
-      backgroundColor: "#EF4444",
-    },
-  ],
-};
+interface DataChartProps {
+  incomes: number[];
+  outcomes: number[];
+}
 
 export const BalanceOverMonths = () => {
+  const { transactions, totalIncomeAndOutcome } =
+    React.useContext(TransactionContext);
+  const [dataChart, setDataChart] = React.useState({} as DataChartProps);
+
+  React.useEffect(() => {
+    const incomes: number[] = [];
+    const outcomes: number[] = [];
+
+    for (let i = 0; i < 12; i++) {
+      try {
+        const currentMonthsTransaction = transactions.filter(
+          (t) => new Date(t.date).getMonth() == i
+        );
+
+        console.log("Month " + (i + 1), currentMonthsTransaction);
+        console.log(totalIncomeAndOutcome(currentMonthsTransaction));
+
+        const { totalIncome, totalOutcome } = totalIncomeAndOutcome(
+          currentMonthsTransaction
+        );
+        incomes.push(totalIncome);
+        outcomes.push(totalOutcome);
+      } catch (ex) {
+        incomes.push(0);
+        outcomes.push(0);
+      }
+    }
+
+    setDataChart({ incomes: incomes, outcomes: outcomes });
+  }, [transactions, setDataChart]);
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "Entradas",
+        data: dataChart.incomes,
+        backgroundColor: "#22C55E",
+      },
+      {
+        label: "Saída",
+        data: dataChart.outcomes,
+        backgroundColor: "#EF4444",
+      },
+    ],
+  };
   return <Bar options={options} data={data} />;
 };

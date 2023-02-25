@@ -16,7 +16,8 @@ export const Home = () => {
   const [values, setValues] = React.useState({} as valuesPros);
 
   React.useEffect(() => {
-    const { totalIncome, totalOutcome, totalBalance } = totalIncomeAndOutcome();
+    const { totalIncome, totalOutcome, totalBalance } =
+      totalIncomeAndOutcome(transactions);
     setValues({
       totalIncome,
       totalOutcome,
@@ -39,7 +40,7 @@ export const Home = () => {
           <Board boardLabel="Saídas" value={values.totalOutcome} />
           <Board boardLabel="Total" value={values.totalBalance} />
         </Box>
-        <LatestTransactions />
+        <LatestTransactions editable />
       </Box>
     </>
   );

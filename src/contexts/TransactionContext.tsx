@@ -9,13 +9,14 @@ import {
   Transaction,
   transactionReducer,
 } from "../reducers/Transaction/reducer";
+import { transactionsTest } from "../transactionData";
 
 interface ContextProps {
   transactions: Transaction[];
   createNewTransaction: (transaction: schemaForm) => void;
   deleteTransaction: (id: number) => void;
   editTransaction: (editedTransaction: schemaForm, id: number) => void;
-  totalIncomeAndOutcome: () => {
+  totalIncomeAndOutcome: (transactionsArray: Transaction[]) => {
     totalIncome: number;
     totalOutcome: number;
     totalBalance: number;
@@ -69,20 +70,31 @@ export const TransactionProvider = ({ children }: ProviderProps) => {
     dispatch(editTransactionAction(editedTransaction, id));
   };
 
-  const totalIncomeAndOutcome = () => {
+  const totalIncomeAndOutcome = (transactionsArray: Transaction[]) => {
     const calculateTransactionsByTyoe = (
       type: "income" | "outcome",
       transactions: Transaction[]
     ) => {
-      return transactions
-        .filter((transaction) => transaction.type === type)
-        .reduce((acc, current) => {
-          return acc + current.value;
-        }, 0);
+      let total: number;
+      try {
+        total = transactions
+          .filter((transaction) => transaction.type === type)
+          .reduce((acc, current) => {
+            return acc + current.value;
+          }, 0);
+      } catch (ex) {
+        total = 0;
+      }
+      return total;
     };
-    const totalIncome = calculateTransactionsByTyoe("income", transactions);
-    const totalOutcome = calculateTransactionsByTyoe("outcome", transactions);
-    const totalBalance = totalIncome - totalOutcome;
+
+    let totalIncome = calculateTransactionsByTyoe("income", transactionsArray);
+    let totalOutcome = calculateTransactionsByTyoe(
+      "outcome",
+      transactionsArray
+    );
+    let totalBalance = totalIncome - totalOutcome;
+
     return {
       totalIncome,
       totalOutcome,

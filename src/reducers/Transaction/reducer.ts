@@ -22,7 +22,7 @@ export const transactionReducer = (state: Transaction[], action: any) => {
           const { editedTransaction } = action.payload;
           s.title = editedTransaction.title;
           s.category = editedTransaction.category;
-          s.value = Number(editedTransaction.value);
+          s.value = Number(editedTransaction.value.replace(",", "."));
           s.type = editedTransaction.type;
           return s;
         } else return s;

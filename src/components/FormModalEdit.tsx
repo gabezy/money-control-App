@@ -57,7 +57,7 @@ export const FormModalEdit = ({
     title: transaction.title,
     category: transaction.category,
     type: transaction.type,
-    value: transaction.value.toFixed(2),
+    value: transaction.value.toFixed(2).replace(".", ","),
   };
 
   const { register, handleSubmit, reset } = useForm({

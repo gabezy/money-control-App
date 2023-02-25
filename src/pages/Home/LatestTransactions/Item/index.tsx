@@ -10,9 +10,14 @@ import { format } from "date-fns";
 interface FactoryProps {
   transaction: Transaction;
   formatedValue: (value: number) => string;
+  editable?: boolean;
 }
 
-export const Item = ({ transaction, formatedValue }: FactoryProps) => {
+export const Item = ({
+  transaction,
+  formatedValue,
+  editable,
+}: FactoryProps) => {
   const { deleteTransaction } = React.useContext(TransactionContext);
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -42,14 +47,16 @@ export const Item = ({ transaction, formatedValue }: FactoryProps) => {
         <TableCell sx={{ color: "#6B7280" }}>
           {formatDate(transaction.date)}
         </TableCell>
-        <TableCell sx={{ color: "#6B7280" }}>
-          <IconButton onClick={() => deleteTransaction(transaction.id)}>
-            <DeleteIcon fontSize="small" />
-          </IconButton>
-          <IconButton onClick={handleOpen}>
-            <EditIcon fontSize="small" />
-          </IconButton>
-        </TableCell>
+        {editable && (
+          <TableCell sx={{ color: "#6B7280" }}>
+            <IconButton onClick={() => deleteTransaction(transaction.id)}>
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+            <IconButton onClick={handleOpen}>
+              <EditIcon fontSize="small" />
+            </IconButton>
+          </TableCell>
+        )}
       </TableRow>
       {isOpen && (
         <FormModalEdit

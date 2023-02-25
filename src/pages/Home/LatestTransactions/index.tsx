@@ -12,7 +12,11 @@ import {
 import { TransactionContext } from "../../../contexts/TransactionContext";
 import { Item } from "./Item";
 
-export const LatestTransactions = () => {
+interface TransactionHistoryProps {
+  editable?: boolean;
+}
+
+export const LatestTransactions = ({ editable }: TransactionHistoryProps) => {
   const { transactions, formatValue } = React.useContext(TransactionContext);
 
   if (transactions.length > 0)
@@ -34,7 +38,12 @@ export const LatestTransactions = () => {
           </TableHead>
           <TableBody>
             {transactions.map((T) => (
-              <Item key={T.id} transaction={T} formatedValue={formatValue} />
+              <Item
+                key={T.id}
+                transaction={T}
+                formatedValue={formatValue}
+                editable={editable}
+              />
             ))}
           </TableBody>
         </Table>
