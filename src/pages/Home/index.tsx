@@ -40,7 +40,7 @@ export const Home = () => {
           <Board boardLabel="Saídas" value={values.totalOutcome} />
           <Board boardLabel="Total" value={values.totalBalance} />
         </Box>
-        <LatestTransactions editable />
+        <LatestTransactions />
       </Box>
     </>
   );
