@@ -1,23 +1,23 @@
 import React from "react";
 import { IconButton, TableCell, TableRow } from "@mui/material";
-import { Transaction } from "../../../../reducers/Transaction/reducer";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { TransactionContext } from "../../../../contexts/TransactionContext";
-import { FormModalEdit } from "../../../../components/FormModalEdit";
 import { format } from "date-fns";
+import { TransactionContext } from "../../../contexts/TransactionContext";
+import { Transaction } from "../../../reducers/Transaction/reducer";
+import { FormModalEdit } from "../../FormModalEdit";
 
-interface FactoryProps {
+interface TransactionItemProps {
   transaction: Transaction;
   formatedValue: (value: number) => string;
   editable?: boolean;
 }
 
-export const Item = ({
+export const TransactionItem = ({
   transaction,
   formatedValue,
   editable,
-}: FactoryProps) => {
+}: TransactionItemProps) => {
   const { deleteTransaction } = React.useContext(TransactionContext);
   const [isOpen, setIsOpen] = React.useState(false);
 
