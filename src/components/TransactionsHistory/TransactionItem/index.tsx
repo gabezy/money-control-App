@@ -5,7 +5,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { format } from "date-fns";
 import { TransactionContext } from "../../../contexts/TransactionContext";
 import { Transaction } from "../../../reducers/Transaction/reducer";
-import { FormModalEdit } from "../../FormModalEdit";
+import { EditTransactionModal } from "../../EditTransactionModal";
 
 interface TransactionItemProps {
   transaction: Transaction;
@@ -59,7 +59,7 @@ export const TransactionItem = ({
         )}
       </TableRow>
       {isOpen && (
-        <FormModalEdit
+        <EditTransactionModal
           transaction={transaction}
           open={isOpen}
           handleClose={handleClose}

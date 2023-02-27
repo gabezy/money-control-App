@@ -1,4 +1,4 @@
-import { schemaForm } from "../../components/FormModalEdit";
+import { schemaForm } from "../../components/EditTransactionModal";
 import { Transaction } from "./reducer";
 
 export enum ActionType {
