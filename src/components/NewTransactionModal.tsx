@@ -2,6 +2,7 @@ import React from "react";
 import {
   Box,
   Button,
+  DialogTitle,
   FormControl,
   FormControlLabel,
   InputAdornment,
@@ -13,9 +14,8 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { TransactionContext } from "../contexts/TransactionContext";
-import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { schema, schemaForm } from "./FormModalEdit";
+import { schema, schemaForm } from "./EditTransactionModal";
 
 const style = {
   position: "absolute" as "absolute",
@@ -29,15 +29,15 @@ const style = {
   borderRadius: 2,
 };
 
-interface FormModalProps {
+interface NewTransactionModalProps {
   open: boolean;
   handleClose: () => void;
 }
 
-export const FormModalNewTransaction = ({
+export const NewTransactionModal = ({
   open,
   handleClose,
-}: FormModalProps) => {
+}: NewTransactionModalProps) => {
   const { createNewTransaction } = React.useContext(TransactionContext);
 
   let defaultValues = { title: "", category: "", value: "", type: "" };
@@ -57,9 +57,16 @@ export const FormModalNewTransaction = ({
     <div>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
-          <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: 2 }}>
+          <DialogTitle
+            sx={{
+              p: 0,
+              paddingBottom: 2,
+              fontWeight: "bold",
+              fontSize: "1.5rem",
+            }}
+          >
             Cadastrar transação
-          </Typography>
+          </DialogTitle>
           <form
             style={{ display: "flex", flexDirection: "column", gap: "24px" }}
             onSubmit={handleSubmit(handleCreateNewTransation)}
@@ -113,6 +120,8 @@ export const FormModalNewTransaction = ({
               sx={{
                 bgcolor: "green",
                 color: "white",
+                fontWeight: "bold",
+                "&:hover": { bgcolor: "green" },
               }}
             >
               Cadastrar

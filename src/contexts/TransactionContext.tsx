@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { schemaForm } from "../components/FormModalEdit";
+import { schemaForm } from "../components/EditTransactionModal";
 import {
   addNewTransactionAction,
   deleteTransactionAction,

@@ -7,7 +7,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { FormModalNewTransaction } from "./FormModalNewTransaction";
+import { NewTransactionModal } from "./NewTransactionModal";
 import { TemporaryDrawer } from "./TemporaryDrawer";
 
 interface HeaderProps {
@@ -40,7 +40,7 @@ export const Header = ({ formModal }: HeaderProps) => {
             </Toolbar>
           </Container>
         </AppBar>
-        <FormModalNewTransaction open={open} handleClose={handleClose} />
+        <NewTransactionModal open={open} handleClose={handleClose} />
       </Box>
     );
   else

@@ -2,6 +2,7 @@ import React from "react";
 import {
   Box,
   Button,
+  DialogTitle,
   FormControl,
   FormControlLabel,
   InputAdornment,
@@ -9,7 +10,6 @@ import {
   Radio,
   RadioGroup,
   TextField,
-  Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -40,17 +40,17 @@ export const schema = z.object({
 
 export type schemaForm = z.infer<typeof schema>;
 
-interface FormModalProps {
+interface EditTransactionModalProps {
   transaction: Transaction;
   open: boolean;
   handleClose: () => void;
 }
 
-export const FormModalEdit = ({
+export const EditTransactionModal = ({
   transaction,
   open,
   handleClose,
-}: FormModalProps) => {
+}: EditTransactionModalProps) => {
   const { editTransaction } = React.useContext(TransactionContext);
 
   const defaultValues: schemaForm = {
@@ -74,9 +74,16 @@ export const FormModalEdit = ({
     <div>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
-          <Typography variant="h5" sx={{ fontWeight: "bold", marginBottom: 2 }}>
-            Editar transação
-          </Typography>
+          <DialogTitle
+            sx={{
+              p: 0,
+              paddingBottom: 2,
+              fontWeight: "bold",
+              fontSize: "1.5rem",
+            }}
+          >
+            Cadastrar transação
+          </DialogTitle>
           <form
             style={{ display: "flex", flexDirection: "column", gap: "24px" }}
             onSubmit={handleSubmit(handleEditCurrentTransaction)}
@@ -130,6 +137,8 @@ export const FormModalEdit = ({
               sx={{
                 bgcolor: "green",
                 color: "white",
+                fontWeight: "bold",
+                "&:hover": { bgcolor: "green" },
               }}
             >
               Cadastrar
