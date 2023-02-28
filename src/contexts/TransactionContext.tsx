@@ -16,10 +16,10 @@ interface ContextProps {
   createNewTransaction: (transaction: schemaForm) => void;
   deleteTransaction: (id: number) => void;
   editTransaction: (editedTransaction: schemaForm, id: number) => void;
-  totalIncomeAndOutcome: (transactionsArray: Transaction[]) => {
-    totalIncome: number;
-    totalOutcome: number;
-    totalBalance: number;
+  summary: (transactions: Transaction[]) => {
+    income: number;
+    outcome: number;
+    total: number;
   };
   formatValue: (value: number) => string;
 }
@@ -70,36 +70,20 @@ export const TransactionProvider = ({ children }: ProviderProps) => {
     dispatch(editTransactionAction(editedTransaction, id));
   };
 
-  const totalIncomeAndOutcome = (transactionsArray: Transaction[]) => {
-    const calculateTransactionsByTyoe = (
-      type: "income" | "outcome",
-      transactions: Transaction[]
-    ) => {
-      let total: number;
-      try {
-        total = transactions
-          .filter((transaction) => transaction.type === type)
-          .reduce((acc, current) => {
-            return acc + current.value;
-          }, 0);
-      } catch (ex) {
-        total = 0;
-      }
-      return total;
-    };
-
-    let totalIncome = calculateTransactionsByTyoe("income", transactionsArray);
-    let totalOutcome = calculateTransactionsByTyoe(
-      "outcome",
-      transactionsArray
+  const summary = (transactions: Transaction[]) => {
+    return transactions.reduce(
+      (acc, transaction) => {
+        if (transaction.type === "income") {
+          acc.income += transaction.value;
+          acc.total += transaction.value;
+        } else {
+          acc.outcome += transaction.value;
+          acc.total -= transaction.value;
+        }
+        return acc;
+      },
+      { income: 0, outcome: 0, total: 0 }
     );
-    let totalBalance = totalIncome - totalOutcome;
-
-    return {
-      totalIncome,
-      totalOutcome,
-      totalBalance,
-    };
   };
 
   const formatValue = (value: number) => {
@@ -112,7 +96,7 @@ export const TransactionProvider = ({ children }: ProviderProps) => {
         createNewTransaction,
         deleteTransaction,
         editTransaction,
-        totalIncomeAndOutcome,
+        summary,
         formatValue,
       }}
     >

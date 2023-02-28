@@ -1,29 +1,11 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { TransactionContext } from "../../contexts/TransactionContext";
-import { Board } from "./Board";
+import { Summary } from "./Summary";
 import { LatestTransactions } from "./LatestTransactions";
 
-interface valuesPros {
-  totalIncome: number;
-  totalOutcome: number;
-  totalBalance: number;
-}
-
 export const Home = () => {
-  const { transactions, totalIncomeAndOutcome } =
-    React.useContext(TransactionContext);
-  const [values, setValues] = React.useState({} as valuesPros);
-
-  React.useEffect(() => {
-    const { totalIncome, totalOutcome, totalBalance } =
-      totalIncomeAndOutcome(transactions);
-    setValues({
-      totalIncome,
-      totalOutcome,
-      totalBalance,
-    });
-  }, [transactions]);
+  const { transactions, summary } = React.useContext(TransactionContext);
 
   return (
     <>
@@ -36,9 +18,9 @@ export const Home = () => {
             marginTop: -6,
           }}
         >
-          <Board boardLabel="Entradas" value={values.totalIncome} />
-          <Board boardLabel="Saídas" value={values.totalOutcome} />
-          <Board boardLabel="Total" value={values.totalBalance} />
+          <Summary boardLabel="Entradas" value={summary(transactions).income} />
+          <Summary boardLabel="Saídas" value={summary(transactions).outcome} />
+          <Summary boardLabel="Total" value={summary(transactions).total} />
         </Box>
         <LatestTransactions />
       </Box>
