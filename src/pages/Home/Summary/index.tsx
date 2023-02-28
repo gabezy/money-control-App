@@ -6,12 +6,12 @@ import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { TransactionContext } from "../../../contexts/TransactionContext";
 
-interface BoardProps {
+interface SummaryProps {
   boardLabel: "Entradas" | "Saídas" | "Total";
   value: number;
 }
 
-export const Board = ({ boardLabel, value }: BoardProps) => {
+export const Summary = ({ boardLabel, value }: SummaryProps) => {
   const { formatValue } = React.useContext(TransactionContext);
 
   const formattedValue = value ? formatValue(value) : formatValue(0);

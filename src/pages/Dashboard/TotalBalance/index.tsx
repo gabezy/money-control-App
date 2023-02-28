@@ -19,17 +19,14 @@ const options = {
 };
 
 export const TotalBalance = () => {
-  const { totalIncomeAndOutcome, transactions } =
-    React.useContext(TransactionContext);
-
-  const { totalIncome, totalOutcome } = totalIncomeAndOutcome(transactions);
+  const { summary, transactions } = React.useContext(TransactionContext);
 
   const data = {
     labels: ["Entradas", "Saídas"],
     datasets: [
       {
         label: "R$",
-        data: [totalIncome, totalOutcome],
+        data: [summary(transactions).income, summary(transactions).outcome],
         backgroundColor: ["#22C55E", "#EF4444"],
       },
     ],

@@ -54,8 +54,7 @@ interface DataChartProps {
 }
 
 export const BalanceOverMonths = () => {
-  const { transactions, totalIncomeAndOutcome } =
-    React.useContext(TransactionContext);
+  const { transactions, summary } = React.useContext(TransactionContext);
   const [dataChart, setDataChart] = React.useState({} as DataChartProps);
 
   React.useEffect(() => {
@@ -63,22 +62,19 @@ export const BalanceOverMonths = () => {
     const outcomes: number[] = [];
 
     for (let i = 0; i < 12; i++) {
+      let income = 0;
+      let outcome = 0;
       try {
         const currentMonthsTransaction = transactions.filter(
           (t) => new Date(t.date).getMonth() == i
         );
-
-        console.log("Month " + (i + 1), currentMonthsTransaction);
-        console.log(totalIncomeAndOutcome(currentMonthsTransaction));
-
-        const { totalIncome, totalOutcome } = totalIncomeAndOutcome(
-          currentMonthsTransaction
-        );
-        incomes.push(totalIncome);
-        outcomes.push(totalOutcome);
+        income = summary(currentMonthsTransaction).income;
+        outcome = summary(currentMonthsTransaction).outcome;
       } catch (ex) {
-        incomes.push(0);
-        outcomes.push(0);
+        continue;
+      } finally {
+        incomes.push(income);
+        outcomes.push(outcome);
       }
     }
 
